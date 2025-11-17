@@ -10,7 +10,7 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val PrimaryBlue = Color(0xFF004488)
-val LightBlue = Color(0xFF42A5F5)
-val SuccessGreen = Color(0xFF4CAF50)
-val CircleColor = Color(0xFF004070) // Azul más oscuro para el círculo
+val PrimaryBlue = Color(0xFF0351B7)
+val LightBlue = Color(0xFF3588C0)
+val SuccessGreen = Color(0xFF29BD5A)
+val CircleColor = Color(0xFF072E61)

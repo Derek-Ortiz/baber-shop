@@ -1,5 +1,6 @@
 package ortiz.derek.c4.barber_shop.View
 
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 
 import androidx.compose.foundation.background
@@ -13,10 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import ortiz.derek.c4.barber_shop.R
 import ortiz.derek.c4.barber_shop.ui.theme.*
 
 
@@ -42,8 +46,8 @@ fun LoginScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(450.dp)
-                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                    .height(500.dp)
+                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 20.dp, bottomEnd = 20.dp))
                     .background(PrimaryBlue)
                     .padding(top = 70.dp, start = 20.dp, end = 20.dp)
             ) {
@@ -51,6 +55,7 @@ fun LoginScreen(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
+
                 ) {
                     Text(
                         text = "Inicio de sesión",
@@ -59,79 +64,95 @@ fun LoginScreen(navController: NavController) {
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        label = { Text("Correo electrónico") },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            cursorColor = Color.Black,
-                            focusedBorderColor = LightBlue,
-                            unfocusedBorderColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                    )
-
-                    OutlinedTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        label = { Text("Contraseña") },
-                        visualTransformation = PasswordVisualTransformation(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            cursorColor = Color.Black,
-                            focusedBorderColor = LightBlue,
-                            unfocusedBorderColor = Color.LightGray
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    Button(
-                        onClick = { /* Lógica de iniciar sesión */ },
-                        colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen),
+                    Column(
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Iniciar sesión", color = Color.White)
-                    }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                        Text("Correo electronico", color = Color.White,
+                            fontSize = 20.sp)
 
-                    Button(
-                        onClick = {
-                            navController.navigate("Registrar")
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Crear usuario", color = Color.White)
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            label = { Text("Correo electrónico") },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color.Black,
+                                unfocusedTextColor = Color.Black,
+                                focusedContainerColor = Color.White,
+                                unfocusedContainerColor = Color.White,
+                                cursorColor = Color.Black,
+                                focusedBorderColor = LightBlue,
+                                unfocusedBorderColor = Color.White
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        )
+
+                        Text("Contraseña", color = Color.White, fontSize = 20.sp)
+                        OutlinedTextField(
+                            value = password,
+                            onValueChange = { password = it },
+                            label = { Text("Contraseña") },
+                            visualTransformation = PasswordVisualTransformation(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color.Black,
+                                unfocusedTextColor = Color.Black,
+                                focusedContainerColor = Color.White,
+                                unfocusedContainerColor = Color.White,
+                                cursorColor = Color.Black,
+                                focusedBorderColor = LightBlue,
+                                unfocusedBorderColor = Color.LightGray
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Button(
+                            onClick = { /* Lógica de iniciar sesión */ },
+                            colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Iniciar sesión", color = Color.White)
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = {
+                                navController.navigate("Registrar")
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Crear usuario", color = Color.White)
+                        }
                     }
                 }
+
+
             }
 
-            // Círculo superpuesto con el ícono (simulado)
+
             Box(
                 modifier = Modifier
-                    .offset(y = (-550).dp) // Mueve el círculo hacia arriba para superponer
+                    .offset(y = (-600).dp) // Mueve el círculo hacia arriba para superponer
                     .size(150.dp)
                     .clip(CircleShape)
                     .background(CircleColor)
                     .align(Alignment.CenterHorizontally),
                 contentAlignment = Alignment.Center
             ) {
-                // Simulación del ícono (puedes usar un Icon real)
-                Text(text = "🕵", fontSize = 40.sp)
+                Image(
+                    painter = painterResource(id = R.drawable.logoarbero),
+                    contentDescription = "Barber icon",
+                    modifier = Modifier.size(100.dp)
+                )
             }
         }
     }
