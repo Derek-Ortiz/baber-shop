@@ -18,9 +18,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BarbershopTheme {
-                
-            }
+//            BarbershopTheme {
+//                NavManager()
+//            }
+            NavManager()
         }
     }
 }
