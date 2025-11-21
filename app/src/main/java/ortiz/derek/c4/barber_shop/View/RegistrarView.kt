@@ -114,7 +114,7 @@ fun Registrar(navController: NavController){
 
                         Button(
                             onClick = {
-//                                navController.navigate("Registrar")
+                                navController.navigate("BarberoHome")
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
                             modifier = Modifier.fillMaxWidth()

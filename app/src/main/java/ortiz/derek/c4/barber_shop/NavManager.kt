@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ortiz.derek.c4.barber_shop.View.LoginScreen
 import ortiz.derek.c4.barber_shop.View.Registrar
+import ortiz.derek.c4.barber_shop.View.cliente.BarberiaHome
 
 @Composable
 fun NavManager(){
@@ -25,6 +26,9 @@ fun NavManager(){
         composable("Registrar"){
             Registrar(navController)
 
+        }
+        composable("BarberoHome"){
+            BarberiaHome(navController)
         }
     }
 }
