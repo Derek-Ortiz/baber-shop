@@ -42,10 +42,11 @@ import ortiz.derek.c4.barber_shop.ui.theme.*
 
 @Composable
 fun BarberiaHome(navController: NavController) {
+
     Scaffold(
-        topBar = { TopBar(navController) },
+        topBar = { TopBar(navController,"Barberias") },
         bottomBar = { ButtonBar(navController) },
-        containerColor = BackgroundColor
+        containerColor = WhiteBackground
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -69,77 +70,85 @@ fun BarberiaHome(navController: NavController) {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            // Sección Añade tu barbería
-            Text(
-                text = "Añade tu barbería",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = PrimaryColor
-            )
-
-
-            // Campo Nombre de la barbería
-            Text(
-                text = "Nombre de la barberia",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = PrimaryColor
-            )
-            TextField(value = nombre, onValueChange = { nombre = it})
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Campo Ubicación de la barbería
-            Text(
-                text = "Ubicación de la barberia",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = PrimaryColor
-            )
-            TextField(value = ubicacion, onValueChange = { ubicacion = it})
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Campo Horario de atención
-            Text(
-                text = "Horario de atención",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = PrimaryColor
-            )
-            TextField(value = horarioAtencion, onValueChange = { horarioAtencion = it})
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Campo Logotipo de la barbería
-            Text(
-                text = "Logotipo de la barbería",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                color = TextColor
-            )
-
-
-            // Selector de imagen
-            ImageSelector()
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            // Botón Registrar
-            Button(
-                onClick = { /* Acción de registro */ },
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = SuccessGreen,
-                    contentColor = PrimaryColor
-                )
-            ) {
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp, bottomStart = 15.dp, bottomEnd = 15.dp))
+                    .background(White)) {
+                // Sección Añade tu barbería
                 Text(
-                    text = "Registrar",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Añade tu barbería",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = PrimaryColor
                 )
+
+                // Campo Nombre de la barbería
+                Text(
+                    text = "Nombre de la barberia",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = PrimaryColor
+                )
+                TextField(value = nombre, onValueChange = { nombre = it})
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Campo Ubicación de la barbería
+                Text(
+                    text = "Ubicación de la barberia",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = PrimaryColor
+                )
+                TextField(value = ubicacion, onValueChange = { ubicacion = it})
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Campo Horario de atención
+                Text(
+                    text = "Horario de atención",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = PrimaryColor
+                )
+                TextField(value = horarioAtencion, onValueChange = { horarioAtencion = it})
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Campo Logotipo de la barbería
+                Text(
+                    text = "Logotipo de la barbería",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = TextColor
+                )
+
+
+                // Selector de imagen
+                ImageSelector()
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                // Botón Registrar
+                Button(
+                    onClick = { /* Acción de registro */ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = SuccessGreen,
+                        contentColor = PrimaryColor
+                    )
+                ) {
+                    Text(
+                        text = "Registrar",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
             }
+
         }
     }
 }
