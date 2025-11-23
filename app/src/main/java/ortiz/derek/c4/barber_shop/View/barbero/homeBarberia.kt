@@ -1,11 +1,10 @@
-package ortiz.derek.c4.barber_shop.View.cliente
+package ortiz.derek.c4.barber_shop.View.barbero
 
-import androidx.compose.foundation.Image
+import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,8 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import ortiz.derek.c4.barber_shop.View.cliente.componentes.ButtonBar
-import ortiz.derek.c4.barber_shop.View.cliente.componentes.TopBar
+import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
+import ortiz.derek.c4.barber_shop.View.barbero.componentes.TopBar
 import ortiz.derek.c4.barber_shop.ui.theme.*
 
 
@@ -44,7 +43,7 @@ import ortiz.derek.c4.barber_shop.ui.theme.*
 fun BarberiaHome(navController: NavController) {
 
     Scaffold(
-        topBar = { TopBar(navController,"Barberias") },
+        topBar = { TopBar(navController, "Barberias") },
         bottomBar = { ButtonBar(navController) },
         containerColor = WhiteBackground
     ) { innerPadding ->
@@ -167,7 +166,7 @@ fun ImageSelector() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+                painter = painterResource(id = R.drawable.ic_menu_gallery),
                 contentDescription = "Añadir imagen",
                 tint = HintColor,
                 modifier = Modifier.size(40.dp)

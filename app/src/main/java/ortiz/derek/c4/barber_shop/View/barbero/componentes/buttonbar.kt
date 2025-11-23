@@ -1,4 +1,4 @@
-package ortiz.derek.c4.barber_shop.View.cliente.componentes
+package ortiz.derek.c4.barber_shop.View.barbero.componentes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
