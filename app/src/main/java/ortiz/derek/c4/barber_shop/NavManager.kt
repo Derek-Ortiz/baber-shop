@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import ortiz.derek.c4.barber_shop.View.LoginScreen
 import ortiz.derek.c4.barber_shop.View.Registrar
 import ortiz.derek.c4.barber_shop.View.barbero.BarberiaHome
+import ortiz.derek.c4.barber_shop.View.barbero.ServicioBarbero
 
 @Composable
 fun NavManager(){
@@ -29,6 +30,9 @@ fun NavManager(){
         }
         composable("BarberoHome"){
             BarberiaHome(navController)
+        }
+        composable("ServicioBarbero") {
+            ServicioBarbero(navController)
         }
     }
 }
