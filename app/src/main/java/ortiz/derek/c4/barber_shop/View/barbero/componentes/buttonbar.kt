@@ -39,7 +39,7 @@ fun ButtonBar(navController: NavController) {
     ) {
         BottomBarButton(icon = Icons.Default.Person, "Perfil","HomeBarbero", navController)
         BottomBarButton(icon = Icons.Default.Home, "Inicio", "Home", navController)
-        BottomBarButton(icon = Icons.Default.CalendarMonth, "Calendario", "ServicioBarbero", navController)
+        BottomBarButton(icon = Icons.Default.CalendarMonth, "Calendario", "HistorialCitasBarbero", navController)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
