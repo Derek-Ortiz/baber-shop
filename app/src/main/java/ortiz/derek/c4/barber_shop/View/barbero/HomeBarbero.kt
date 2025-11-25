@@ -1,0 +1,105 @@
+package ortiz.derek.c4.barber_shop.View.barbero
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import ortiz.derek.c4.barber_shop.R
+import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
+import ortiz.derek.c4.barber_shop.View.barbero.componentes.CardDate
+import ortiz.derek.c4.barber_shop.View.barbero.componentes.TopBar
+import ortiz.derek.c4.barber_shop.ui.theme.PrimaryBlue
+import ortiz.derek.c4.barber_shop.ui.theme.WhiteBackground
+
+@Composable
+fun HomeBarbero(navController: NavController){
+    Scaffold(
+        topBar = { TopBar(navController,"Barberias" ) },
+        bottomBar = { ButtonBar(navController) },
+        contentColor = WhiteBackground
+    ){
+      innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+
+        ) {
+            BarberShopInfoCard()
+            CardDate("José","12:30 pm- 1:00pm")
+            CardDate("José","1:00 pm- 1:30pm")
+            CardDate("José","2:30 pm- 3:00pm")
+            CardDate("José","4:30 pm- 5:00pm")
+        }
+    }
+}
+
+@Composable
+fun BarberShopInfoCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        elevation = 4.dp
+    ) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .background(PrimaryBlue.copy(alpha = 0.8f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logoarbero),
+                    contentDescription = "Barber Shop Logo",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Barber Shop", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.LocationOn, contentDescription = "Location")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Calle 80 #123, Centro")
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Call, contentDescription = "Phone")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("999-123-4567")
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Lock, contentDescription = "Hours")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("8:00-19:00")
+                }
+            }
+        }
+    }
+}

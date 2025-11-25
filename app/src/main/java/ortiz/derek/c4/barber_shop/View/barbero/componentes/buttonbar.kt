@@ -37,7 +37,7 @@ fun ButtonBar(navController: NavController) {
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        BottomBarButton(icon = Icons.Default.Person, "Perfil","Registrar", navController)
+        BottomBarButton(icon = Icons.Default.Person, "Perfil","HomeBarbero", navController)
         BottomBarButton(icon = Icons.Default.Home, "Inicio", "Home", navController)
         BottomBarButton(icon = Icons.Default.CalendarMonth, "Calendario", "ServicioBarbero", navController)
 
@@ -53,7 +53,7 @@ fun ButtonBar(navController: NavController) {
                     modifier = Modifier.size(24.dp)
                 )
             }
-            Text(text = "Ajustes",
+            Text(text = "Servicios",
                 color = Color.White,
                 fontSize = 12.sp)
 

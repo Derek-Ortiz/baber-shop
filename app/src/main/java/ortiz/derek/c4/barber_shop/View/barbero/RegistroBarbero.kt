@@ -1,7 +1,8 @@
-package ortiz.derek.c4.barber_shop.View
+package ortiz.derek.c4.barber_shop.View.barbero
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,33 +17,38 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ortiz.derek.c4.barber_shop.R
 import ortiz.derek.c4.barber_shop.ui.theme.CircleColor
 import ortiz.derek.c4.barber_shop.ui.theme.LightBlue
 import ortiz.derek.c4.barber_shop.ui.theme.PrimaryBlue
+import ortiz.derek.c4.barber_shop.ui.theme.White
+import ortiz.derek.c4.barber_shop.ui.theme.SuccessGreen
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registrar(navController: NavController){
-
+fun RegistroBarbero(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,10 +65,11 @@ fun Registrar(navController: NavController){
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(650.dp)
                     .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 20.dp, bottomEnd = 20.dp))
                     .background(PrimaryBlue)
                     .padding(top = 70.dp, start = 20.dp, end = 20.dp)
+
             ) {
                 IconButton(
                     onClick ={
@@ -79,47 +86,87 @@ fun Registrar(navController: NavController){
                     modifier = Modifier.fillMaxWidth()
 
                 ) {
-                    Text(
-                        text = "Registrarse",
-                        color = Color.White,
-                        fontSize = 30.sp,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                    Text(
-                        text = "Selecciona un perfil",
-                        color = Color.White,
-                        fontSize = 15.sp,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-
                     Column(
-
                         modifier = Modifier.fillMaxWidth()
                             .fillMaxHeight(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
-
-
-                    ) {
-
-                        Button(
-                            onClick = { /* Lógica de iniciar sesión */ },
-                            colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
-                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Cliente", color = Color.White)
-                        }
+                        var nombre by remember { mutableStateOf("") }
+                        var apellidoP by remember { mutableStateOf("") }
+                        var apellidoM by remember { mutableStateOf("") }
+                        var telefono by remember { mutableStateOf("")}
+                        var email by remember {mutableStateOf("")}
+                        var contraseña by remember { mutableStateOf("") }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        //Nombre
+                        Text(
+                            text = "Nombre(s)",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = White
+                        )
+                        TextField(value = nombre, onValueChange = { nombre = it})
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        // Apellido paterno
+                        Text(
+                            text = "Apellido paterno",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = White
+                        )
+                        TextField(value = apellidoP, onValueChange = { apellidoP = it})
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        //Aoellido materno
+                        Text(
+                            text = "Apellido materno",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = White
+                        )
+                        TextField(value = apellidoM, onValueChange = { apellidoM = it})
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        //telefono
+                        Text(
+                            text = "Telefono",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = White
+                        )
+                        TextField(value = telefono, onValueChange = { telefono = it})
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        //Correo Electronico
+                        Text(
+                            text = "Correo Electronico",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = White
+                        )
+                        TextField(value = email, onValueChange = { email = it})
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        //Contraseña
+                        Text(
+                            text = "Contraseña",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = White
+                        )
+                        TextField(value = contraseña, onValueChange = {contraseña = it})
 
                         Button(
                             onClick = {
-                                navController.navigate("RegistroBarbero")
+                                navController.navigate("BarberoHome")
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
+                            colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Peluquero", color = Color.White)
+                            Text("Crear Cuenta", color = Color.White)
                         }
                     }
                 }
@@ -130,7 +177,7 @@ fun Registrar(navController: NavController){
 
             Box(
                 modifier = Modifier
-                    .offset(y = (-500).dp) // Mueve el círculo hacia arriba para superponer
+                    .offset(y = (-700).dp) // Mueve el círculo hacia arriba para superponer
                     .size(150.dp)
                     .clip(CircleShape)
                     .background(CircleColor)
@@ -145,6 +192,5 @@ fun Registrar(navController: NavController){
             }
         }
     }
-
 
 }
