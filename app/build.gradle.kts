@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,27 +62,34 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     //my dependencies
-    val room_version = "2.8.3"
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.57.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.57.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // Room
+    val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 
-    implementation("com.google.dagger:hilt-android:2.57.1")
-    ksp("com.google.dagger:hilt-android-compiler:2.57.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
-    val nav_version = "2.9.5"
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-
-    implementation("androidx.compose.material:material:1.9.4")
+    // Other
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
 
     implementation("me.saket.swipe:swipe:1.3.0")
 
-
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
-
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
-
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
 }

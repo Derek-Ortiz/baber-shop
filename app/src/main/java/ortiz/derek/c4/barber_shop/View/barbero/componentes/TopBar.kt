@@ -44,17 +44,9 @@ fun TopBar(navController: NavController, Text: String) {
         ),
         navigationIcon = {
             Row() {
+
                 IconButton(onClick = {
-                    navController.popBackStack()
-                }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Atrás",
-                        tint = Color.White
-                    )
-                }
-                IconButton(onClick = {
-                    navController.navigate("Home")
+                    navController.navigate("HomeBarbero")
                 }) {
                     Image(
                         painter = painterResource(id = R.drawable.logoarbero),

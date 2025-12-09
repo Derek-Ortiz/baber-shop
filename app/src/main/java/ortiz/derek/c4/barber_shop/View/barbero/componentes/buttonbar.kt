@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Home
@@ -37,15 +37,15 @@ fun ButtonBar(navController: NavController) {
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        BottomBarButton(icon = Icons.Default.Person, "Perfil","HomeBarbero", navController)
-        BottomBarButton(icon = Icons.Default.Home, "Inicio", "Home", navController)
+        BottomBarButton(icon = Icons.Default.Person, "Perfil","PerfilBarbero", navController)
+        BottomBarButton(icon = Icons.Default.Home, "Inicio", "HomeBarbero", navController)
         BottomBarButton(icon = Icons.Default.CalendarMonth, "Calendario", "HistorialCitasBarbero", navController)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(onClick = {
-                navController.navigate("BarberoHome")
+                navController.navigate("ServicioBarbero")
             }) {
                 Image(
                     painter = painterResource(id = R.drawable.imgtijeas),

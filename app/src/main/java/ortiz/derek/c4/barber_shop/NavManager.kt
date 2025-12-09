@@ -9,6 +9,7 @@ import ortiz.derek.c4.barber_shop.View.Registrar
 import ortiz.derek.c4.barber_shop.View.barbero.BarberiaHome
 import ortiz.derek.c4.barber_shop.View.barbero.HistorialCitasBarbero
 import ortiz.derek.c4.barber_shop.View.barbero.HomeBarbero
+import ortiz.derek.c4.barber_shop.View.barbero.PerfilBarbero
 import ortiz.derek.c4.barber_shop.View.barbero.RegistroBarbero
 import ortiz.derek.c4.barber_shop.View.barbero.ServicioBarbero
 
@@ -46,6 +47,9 @@ fun NavManager(){
         }
         composable("HistorialCitasBarbero"){
             HistorialCitasBarbero(navController)
+        }
+        composable("PerfilBarbero"){
+            PerfilBarbero(navController)
         }
     }
 }

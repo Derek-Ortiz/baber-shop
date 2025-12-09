@@ -26,7 +26,7 @@ data class Admin(
     @ColumnInfo("apellido_m")
     val apellidoM:String,
     @ColumnInfo("telefono")
-    val telefono: Int,
+    val telefono: String,
     @ColumnInfo("email")
     val email:String,
     @ColumnInfo("contrasenia")

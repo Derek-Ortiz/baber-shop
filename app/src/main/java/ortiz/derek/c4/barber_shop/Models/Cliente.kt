@@ -15,7 +15,7 @@ data class Cliente(
     @ColumnInfo(name = "apellido_m")
     val apellidoM: String,
     @ColumnInfo(name = "telefono")
-    val telefono: Int,
+    val telefono: String,
     @ColumnInfo(name = "email")
     val email: String,
     @ColumnInfo(name = "contrasenia")

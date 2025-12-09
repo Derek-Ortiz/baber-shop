@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,9 +32,10 @@ import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.CardDate
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.TopBar
 import ortiz.derek.c4.barber_shop.ui.theme.WhiteBackground
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import kotlin.text.Typography.tm
+import java.util.Locale
 
 
 
@@ -107,7 +109,7 @@ fun HistorialCitasBarbero(navController: NavController) {
 fun DateSelector(label: String, date: Date?, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        elevation = 4.dp,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier.clickable(onClick = onClick)
     ) {
         Column(
@@ -117,7 +119,7 @@ fun DateSelector(label: String, date: Date?, onClick: () -> Unit) {
             Text(text = label, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = date?.let { "%1$tm/%1$tm/%1$tm".format(it) } ?: "dd/mm/yy",
+                text = date?.let { SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(it) } ?: "dd/mm/yy",
                 color = Color.Gray,
                 textAlign = TextAlign.Center
             )
