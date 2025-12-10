@@ -24,19 +24,8 @@ class HomeBarberiaViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf<HomeBarberiaState>(HomeBarberiaState.Idle)
+    private val _state = mutableStateOf<HomeBarberiaState>(HomeBarberiaState.NoNegocio)
     val state: State<HomeBarberiaState> = _state
-
-    init {
-        viewModelScope.launch {
-            val userData = userPreferencesRepository.userData.first()
-            if (userData.negocioId != null) {
-                getNegocio(userData.negocioId)
-            } else {
-                _state.value = HomeBarberiaState.NoNegocio
-            }
-        }
-    }
 
     fun createNegocio(nombre: String, direccion: String) {
         viewModelScope.launch {
@@ -89,7 +78,6 @@ class HomeBarberiaViewModel @Inject constructor(
 }
 
 sealed class HomeBarberiaState {
-    object Idle : HomeBarberiaState()
     object Loading : HomeBarberiaState()
     object NoNegocio : HomeBarberiaState()
     data class NegocioCreated(val negocio: ortiz.derek.c4.barber_shop.data.remote.dto.NegocioDto) : HomeBarberiaState()

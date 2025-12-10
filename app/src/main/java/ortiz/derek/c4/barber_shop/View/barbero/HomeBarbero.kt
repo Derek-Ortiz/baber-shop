@@ -3,6 +3,8 @@ package ortiz.derek.c4.barber_shop.View.barbero
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
@@ -10,10 +12,12 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,41 +27,59 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ortiz.derek.c4.barber_shop.R
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.CardDate
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.TopBar
+import ortiz.derek.c4.barber_shop.data.remote.dto.GetNegocioResponseData
 import ortiz.derek.c4.barber_shop.ui.theme.PrimaryBlue
 import ortiz.derek.c4.barber_shop.ui.theme.WhiteBackground
 
 @Composable
-fun HomeBarbero(navController: NavController){
+fun HomeBarbero(navController: NavController, viewModel: HomeBarberoViewModel = hiltViewModel()){
+    val state by viewModel.state
+
     Scaffold(
         topBar = { TopBar(navController,"Barberias" ) },
         bottomBar = { ButtonBar(navController) },
-        contentColor = WhiteBackground
+        containerColor = WhiteBackground
     ){
       innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-
+            contentAlignment = Alignment.Center
         ) {
-            BarberShopInfoCard()
-            CardDate("José","12:30 pm- 1:00pm")
-            CardDate("José","1:00 pm- 1:30pm")
-            CardDate("José","2:30 pm- 3:00pm")
-            CardDate("José","4:30 pm- 5:00pm")
+            when (val currentState = state) {
+                is HomeBarberoState.Loading -> {
+                    CircularProgressIndicator()
+                }
+                is HomeBarberoState.Error -> {
+                    Text(text = currentState.message, color = Color.Red)
+                }
+                is HomeBarberoState.Success -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        BarberShopInfoCard(negocioData = currentState.negocioData)
+                        CardDate("José","12:30 pm- 1:00pm")
+                        CardDate("José","1:00 pm- 1:30pm")
+                        CardDate("José","2:30 pm- 3:00pm")
+                        CardDate("José","4:30 pm- 5:00pm")
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun BarberShopInfoCard() {
+fun BarberShopInfoCard(negocioData: GetNegocioResponseData) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -81,12 +103,12 @@ fun BarberShopInfoCard() {
                 )
             }
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("Barber Shop", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(negocioData.negocio.nombreN, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.LocationOn, contentDescription = "Location")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Calle 80 #123, Centro")
+                    Text(negocioData.negocio.direccion)
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -98,7 +120,11 @@ fun BarberShopInfoCard() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Lock, contentDescription = "Hours")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("8:00-19:00")
+                    LazyColumn(modifier = Modifier.height(50.dp)){
+                        items(negocioData.horarios){
+                            Text("${it.dia}: ${it.horaApertura} - ${it.horaCierre}")
+                        }
+                    }
                 }
             }
         }

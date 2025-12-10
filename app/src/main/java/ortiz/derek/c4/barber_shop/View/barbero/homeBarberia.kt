@@ -39,7 +39,7 @@ fun BarberiaHome(navController: NavController, viewModel: HomeBarberiaViewModel 
             contentAlignment = Alignment.Center
         ) {
             when (val currentState = state) {
-                is HomeBarberiaState.Idle, is HomeBarberiaState.Loading -> {
+                is HomeBarberiaState.Loading -> {
                     CircularProgressIndicator()
                 }
                 is HomeBarberiaState.Error -> {
@@ -49,7 +49,9 @@ fun BarberiaHome(navController: NavController, viewModel: HomeBarberiaViewModel 
                     CreateNegocioContent(viewModel = viewModel)
                 }
                 is HomeBarberiaState.NegocioCreated -> {
-                    NegocioDetailsContent(negocioData = GetNegocioResponseData(currentState.negocio, emptyList(), emptyList()), viewModel = viewModel)
+                    LaunchedEffect(Unit){
+                        navController.navigate("homeBarbero")
+                    }
                 }
                 is HomeBarberiaState.NegocioLoaded -> {
                     NegocioDetailsContent(negocioData = currentState.negocioData, viewModel = viewModel)
@@ -71,9 +73,31 @@ fun CreateNegocioContent(viewModel: HomeBarberiaViewModel) {
     ) {
         Text("Añade tu barbería", fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre de la barbería") })
+        OutlinedTextField(
+            value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre de la barbería") },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                cursorColor = Color.Black,
+                focusedBorderColor = LightBlue,
+                unfocusedBorderColor = Color.Gray
+            )
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(value = direccion, onValueChange = { direccion = it }, label = { Text("Dirección") })
+        OutlinedTextField(
+            value = direccion, onValueChange = { direccion = it }, label = { Text("Dirección") },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                cursorColor = Color.Black,
+                focusedBorderColor = LightBlue,
+                unfocusedBorderColor = Color.Gray
+            )
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { viewModel.createNegocio(nombre, direccion) }) {
             Text("Registrar Negocio")

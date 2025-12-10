@@ -119,10 +119,13 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                         when (loginState) {
                             is LoginState.Success -> {
                                 LaunchedEffect(Unit) {
-                                    if (userData?.negocioId == null) {
-                                        navController.navigate("homeBarberia")
+                                    if (userData?.negocioId == 0 || userData?.negocioId == -1 || userData?.negocioId == null) {
+                                        navController.navigate("BarberoHome")
+//                                        navController.navigate("homeBarbero")
+
                                     } else {
                                         navController.navigate("homeBarbero")
+//                                        navController.navigate("BarberoHome")
                                     }
                                 }
                             }
