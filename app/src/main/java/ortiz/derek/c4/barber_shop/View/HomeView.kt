@@ -19,15 +19,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ortiz.derek.c4.barber_shop.R
 import ortiz.derek.c4.barber_shop.ui.theme.*
 
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val loginState by viewModel.loginState
+    val userData by viewModel.userPreferencesRepository.userData.collectAsState(initial = null)
 
     Box(
         modifier = Modifier
@@ -113,8 +116,28 @@ fun LoginScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.height(24.dp))
 
+                        when (loginState) {
+                            is LoginState.Success -> {
+                                LaunchedEffect(Unit) {
+                                    if (userData?.negocioId == null) {
+                                        navController.navigate("homeBarberia")
+                                    } else {
+                                        navController.navigate("homeBarbero")
+                                    }
+                                }
+                            }
+                            is LoginState.Error -> {
+                                val error = (loginState as LoginState.Error).message
+                                Text(error, color = Color.Red)
+                            }
+                            is LoginState.Loading -> {
+                                CircularProgressIndicator()
+                            }
+                            else -> {}
+                        }
+
                         Button(
-                            onClick = { /* Lógica de iniciar sesión */ },
+                            onClick = { viewModel.login(email, password) },
                             colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen),
                             modifier = Modifier.fillMaxWidth()
                         ) {

@@ -51,5 +51,7 @@ fun NavManager(){
         composable("PerfilBarbero"){
             PerfilBarbero(navController)
         }
+
+
     }
 }
