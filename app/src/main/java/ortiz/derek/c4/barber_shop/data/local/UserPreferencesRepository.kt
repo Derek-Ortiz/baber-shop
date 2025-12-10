@@ -23,6 +23,7 @@ class UserPreferencesRepository @Inject constructor(@ApplicationContext private 
         val USER_EMAIL = stringPreferencesKey("user_email")
         val USER_PASSWORD = stringPreferencesKey("user_password")
         val NEGOCIO_ID = intPreferencesKey("negocio_id")
+        val ADMIN_PHONE = stringPreferencesKey("admin_phone")
     }
 
     val userData: Flow<UserData> = context.dataStore.data
@@ -31,11 +32,12 @@ class UserPreferencesRepository @Inject constructor(@ApplicationContext private 
                 userId = it[PreferencesKeys.USER_ID],
                 email = it[PreferencesKeys.USER_EMAIL],
                 password = it[PreferencesKeys.USER_PASSWORD],
-                negocioId = it[PreferencesKeys.NEGOCIO_ID]
+                negocioId = it[PreferencesKeys.NEGOCIO_ID],
+                adminPhone = it[PreferencesKeys.ADMIN_PHONE]
             )
         }
 
-    suspend fun saveUserData(userId: Int, email: String, password: String, negocioId: Int?) {
+    suspend fun saveUserData(userId: Int, email: String, password: String, negocioId: Int?, adminPhone: String?) {
         context.dataStore.edit {
             it[PreferencesKeys.USER_ID] = userId
             it[PreferencesKeys.USER_EMAIL] = email
@@ -44,6 +46,11 @@ class UserPreferencesRepository @Inject constructor(@ApplicationContext private 
                 it[PreferencesKeys.NEGOCIO_ID] = negocioId
             } else {
                 it.remove(PreferencesKeys.NEGOCIO_ID)
+            }
+            if (adminPhone != null){
+                it[PreferencesKeys.ADMIN_PHONE] = adminPhone
+            } else {
+                it.remove(PreferencesKeys.ADMIN_PHONE)
             }
         }
     }
@@ -65,5 +72,6 @@ data class UserData(
     val userId: Int?,
     val email: String?,
     val password: String?,
-    val negocioId: Int?
+    val negocioId: Int?,
+    val adminPhone: String?
 )

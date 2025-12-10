@@ -27,6 +27,15 @@ class HomeBarberiaViewModel @Inject constructor(
     private val _state = mutableStateOf<HomeBarberiaState>(HomeBarberiaState.NoNegocio)
     val state: State<HomeBarberiaState> = _state
 
+    init {
+        viewModelScope.launch {
+            val userData = userPreferencesRepository.userData.first()
+            userData.negocioId?.let {
+                getNegocio(it)
+            }
+        }
+    }
+
     fun createNegocio(nombre: String, direccion: String) {
         viewModelScope.launch {
             _state.value = HomeBarberiaState.Loading
@@ -34,7 +43,7 @@ class HomeBarberiaViewModel @Inject constructor(
                 val response = createNegocioUseCase(CreateNegocioRequest(nombre, direccion))
                 if (response.success) {
                     userPreferencesRepository.saveNegocioId(response.data.id)
-                    _state.value = HomeBarberiaState.NegocioCreated(response.data)
+                    _state.value = HomeBarberiaState.NavigateToHome
                 } else {
                     _state.value = HomeBarberiaState.Error("Error al crear el negocio")
                 }
@@ -80,7 +89,7 @@ class HomeBarberiaViewModel @Inject constructor(
 sealed class HomeBarberiaState {
     object Loading : HomeBarberiaState()
     object NoNegocio : HomeBarberiaState()
-    data class NegocioCreated(val negocio: ortiz.derek.c4.barber_shop.data.remote.dto.NegocioDto) : HomeBarberiaState()
+    object NavigateToHome : HomeBarberiaState()
     data class NegocioLoaded(val negocioData: GetNegocioResponseData) : HomeBarberiaState()
     data class Error(val message: String) : HomeBarberiaState()
 }

@@ -8,14 +8,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ortiz.derek.c4.barber_shop.data.local.UserPreferencesRepository
 import ortiz.derek.c4.barber_shop.data.remote.dto.LoginRequest
-import ortiz.derek.c4.barber_shop.data.remote.dto.LoginResponse
 import ortiz.derek.c4.barber_shop.domain.use_case.LoginUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
     private val _loginState = mutableStateOf<LoginState>(LoginState.Idle)
@@ -27,15 +26,29 @@ class LoginViewModel @Inject constructor(
             try {
                 val response = loginUseCase(LoginRequest(email, password))
                 if (response.success) {
-                    userPreferencesRepository.saveUserData(
-                        userId = response.administrador.id,
-                        email = email,
-                        password = password,
-                        negocioId = response.administrador.negocioId ?: -1
-                    )
-                    _loginState.value = LoginState.Success(response)
+                    val user = response.administrador ?: response.administrador
+                    val negocioId = response.administrador?.negocioId
+
+                    if (user != null) {
+                        userPreferencesRepository.saveUserData(
+                            userId = user.id,
+                            email = email,
+                            password = password, // Consider security implications of storing password
+                            negocioId = negocioId,
+                            adminPhone = response.administrador?.telefono
+                        )
+
+                        val route = if (negocioId != null) {
+                            "homeBarbero"
+                        } else {
+                            "BarberoHome"
+                        }
+                        _loginState.value = LoginState.Success(route)
+                    } else {
+                        _loginState.value = LoginState.Error("No se encontraron datos de usuario en la respuesta.")
+                    }
                 } else {
-                    _loginState.value = LoginState.Error("Usuario o contraseña incorrectos")
+                    _loginState.value = LoginState.Error(response.message ?: "Usuario o contraseña incorrectos")
                 }
             } catch (e: Exception) {
                 _loginState.value = LoginState.Error(e.message ?: "Error desconocido")
@@ -47,6 +60,6 @@ class LoginViewModel @Inject constructor(
 sealed class LoginState {
     object Idle : LoginState()
     object Loading : LoginState()
-    data class Success(val loginResponse: LoginResponse) : LoginState()
+    data class Success(val route: String) : LoginState()
     data class Error(val message: String) : LoginState()
 }

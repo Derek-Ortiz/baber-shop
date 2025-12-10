@@ -37,7 +37,7 @@ fun ServicioDialog(
 ) {
     if (showDialog) {
         var nombre by remember { mutableStateOf(servicioToEdit?.nombre ?: "") }
-        var costo by remember { mutableStateOf(servicioToEdit?.costo?.toString() ?: "") }
+        var precio by remember { mutableStateOf(servicioToEdit?.precio?.toString() ?: "") }
         var duracion by remember { mutableStateOf(servicioToEdit?.duracion?.toString() ?: "") }
 
         Dialog(onDismissRequest = onDismiss) {
@@ -60,8 +60,8 @@ fun ServicioDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("Costo del servicio", fontWeight = FontWeight.Bold)
-                    TextField(value = costo, onValueChange = { costo = it }, placeholder = { Text("Costo") })
+                    Text("Precio del servicio", fontWeight = FontWeight.Bold)
+                    TextField(value = precio, onValueChange = { precio = it }, placeholder = { Text("Precio") })
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -82,8 +82,9 @@ fun ServicioDialog(
                                 val newServicio = Servicio(
                                     id = servicioToEdit?.id ?: 0,
                                     nombre = nombre,
-                                    costo = costo.toIntOrNull() ?: 0,
-                                    duracion = duracion.toIntOrNull() ?: 0
+                                    precio = precio.toDoubleOrNull() ?: 0.0,
+                                    duracion = duracion.toIntOrNull() ?: 0,
+                                    negocioId = servicioToEdit?.negocioId ?: 0
                                 )
                                 onConfirm(newServicio)
                             },

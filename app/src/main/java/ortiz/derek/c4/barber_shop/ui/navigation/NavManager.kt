@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ortiz.derek.c4.barber_shop.View.barbero.BarberiaHome
 import ortiz.derek.c4.barber_shop.ui.cliente.FechaHoraView
 import ortiz.derek.c4.barber_shop.ui.cliente.HomeView
 import ortiz.derek.c4.barber_shop.ui.cliente.MisCitasView
@@ -27,6 +28,9 @@ fun NavManager() {
         }
         composable("home") {
             HomeView(navController)
+        }
+        composable("homeBarbero") {
+            BarberiaHome(navController)
         }
         composable(
             route = "servicios/{barberiaId}",

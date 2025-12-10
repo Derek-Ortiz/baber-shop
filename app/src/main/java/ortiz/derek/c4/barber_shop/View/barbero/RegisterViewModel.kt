@@ -36,7 +36,8 @@ class RegisterViewModel @Inject constructor(
                             userId = loginResponse.administrador.id,
                             email = registerRequest.email,
                             password = registerRequest.contraseña,
-                            negocioId = loginResponse.administrador.negocioId
+                            negocioId = loginResponse.administrador.negocioId,
+                            adminPhone = loginResponse.administrador.telefono
                         )
                         _registerState.value = RegisterState.Success(loginResponse)
                     } else {

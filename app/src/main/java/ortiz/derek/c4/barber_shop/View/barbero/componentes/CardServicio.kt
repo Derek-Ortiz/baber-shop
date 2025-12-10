@@ -98,7 +98,7 @@ fun CardServicio(
                     }
                 }
                 Text(
-                    text = "$${servicio.costo}",
+                    text = "$${servicio.precio}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     color = animatedPriceColor

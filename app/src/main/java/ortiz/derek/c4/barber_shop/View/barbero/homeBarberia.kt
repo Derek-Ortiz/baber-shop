@@ -48,7 +48,7 @@ fun BarberiaHome(navController: NavController, viewModel: HomeBarberiaViewModel 
                 is HomeBarberiaState.NoNegocio -> {
                     CreateNegocioContent(viewModel = viewModel)
                 }
-                is HomeBarberiaState.NegocioCreated -> {
+                is HomeBarberiaState.NavigateToHome -> {
                     LaunchedEffect(Unit){
                         navController.navigate("homeBarbero")
                     }
@@ -114,7 +114,7 @@ fun NegocioDetailsContent(negocioData: GetNegocioResponseData, viewModel: HomeBa
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(negocioData.negocio.nombreN, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text(negocioData.negocio.nombre, fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Text(negocioData.negocio.direccion, fontSize = 16.sp)
 
         Spacer(modifier = Modifier.height(16.dp))

@@ -30,7 +30,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val loginState by viewModel.loginState
-    val userData by viewModel.userPreferencesRepository.userData.collectAsState(initial = null)
 
     Box(
         modifier = Modifier
@@ -116,22 +115,14 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        when (loginState) {
+                        when (val state = loginState) {
                             is LoginState.Success -> {
                                 LaunchedEffect(Unit) {
-                                    if (userData?.negocioId == 0 || userData?.negocioId == -1 || userData?.negocioId == null) {
-                                        navController.navigate("BarberoHome")
-//                                        navController.navigate("homeBarbero")
-
-                                    } else {
-                                        navController.navigate("homeBarbero")
-//                                        navController.navigate("BarberoHome")
-                                    }
+                                    navController.navigate(state.route)
                                 }
                             }
                             is LoginState.Error -> {
-                                val error = (loginState as LoginState.Error).message
-                                Text(error, color = Color.Red)
+                                Text(state.message, color = Color.Red)
                             }
                             is LoginState.Loading -> {
                                 CircularProgressIndicator()

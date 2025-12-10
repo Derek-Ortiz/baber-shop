@@ -2,7 +2,17 @@ package ortiz.derek.c4.barber_shop.View.barbero
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,15 +48,15 @@ import ortiz.derek.c4.barber_shop.ui.theme.PrimaryBlue
 import ortiz.derek.c4.barber_shop.ui.theme.WhiteBackground
 
 @Composable
-fun HomeBarbero(navController: NavController, viewModel: HomeBarberoViewModel = hiltViewModel()){
+fun HomeBarbero(navController: NavController, viewModel: HomeBarberoViewModel = hiltViewModel()) {
     val state by viewModel.state
 
     Scaffold(
-        topBar = { TopBar(navController,"Barberias" ) },
+        topBar = { TopBar(navController, "Barberias") },
         bottomBar = { ButtonBar(navController) },
         containerColor = WhiteBackground
-    ){
-      innerPadding ->
+    ) {
+        innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -62,15 +72,22 @@ fun HomeBarbero(navController: NavController, viewModel: HomeBarberoViewModel = 
                     Text(text = currentState.message, color = Color.Red)
                 }
                 is HomeBarberoState.Success -> {
-                    Column(
+                    LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        BarberShopInfoCard(negocioData = currentState.negocioData)
-                        CardDate("José","12:30 pm- 1:00pm")
-                        CardDate("José","1:00 pm- 1:30pm")
-                        CardDate("José","2:30 pm- 3:00pm")
-                        CardDate("José","4:30 pm- 5:00pm")
+                        item {
+                            BarberShopInfoCard(
+                                negocioData = currentState.negocioData,
+                                adminPhone = currentState.adminPhone
+                            )
+                        }
+                        items(currentState.citas) { cita ->
+                            CardDate(
+                                name = "${cita.cliente.nombres} ${cita.cliente.apellidoP}",
+                                Horario = "${cita.cita.hora} - ${cita.cita.fecha}"
+                            )
+                        }
                     }
                 }
             }
@@ -79,7 +96,7 @@ fun HomeBarbero(navController: NavController, viewModel: HomeBarberoViewModel = 
 }
 
 @Composable
-fun BarberShopInfoCard(negocioData: GetNegocioResponseData) {
+fun BarberShopInfoCard(negocioData: GetNegocioResponseData, adminPhone: String?) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
@@ -103,26 +120,30 @@ fun BarberShopInfoCard(negocioData: GetNegocioResponseData) {
                 )
             }
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(negocioData.negocio.nombreN, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(negocioData.negocio?.nombre ?: "Nombre no disponible", fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.LocationOn, contentDescription = "Location")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(negocioData.negocio.direccion)
+                    Text(negocioData.negocio?.direccion ?: "Dirección no disponible")
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Call, contentDescription = "Phone")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("999-123-4567")
+                    Text(adminPhone ?: "999-123-4567")
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Lock, contentDescription = "Hours")
                     Spacer(modifier = Modifier.width(8.dp))
-                    LazyColumn(modifier = Modifier.height(50.dp)){
-                        items(negocioData.horarios){
-                            Text("${it.dia}: ${it.horaApertura} - ${it.horaCierre}")
+                    Column {
+                        if (negocioData.horarios.isNullOrEmpty()){
+                            Text("No hay horarios registrados")
+                        }else {
+                            negocioData.horarios.forEach {
+                                Text("${it.dia}: ${it.horaApertura} - ${it.horaCierre}")
+                            }
                         }
                     }
                 }

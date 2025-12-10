@@ -7,10 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ortiz.derek.c4.barber_shop.data.remote.ApiService
-import ortiz.derek.c4.barber_shop.data.repository.AdminRepositoryImpl
-import ortiz.derek.c4.barber_shop.data.repository.BarberShopRepositoryImpl
-import ortiz.derek.c4.barber_shop.domain.repository.AdminRepository
-import ortiz.derek.c4.barber_shop.domain.repository.BarberShopRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -47,17 +43,5 @@ object AppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAdminRepository(apiService: ApiService): AdminRepository {
-        return AdminRepositoryImpl(apiService)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBarberShopRepository(apiService: ApiService): BarberShopRepository {
-        return BarberShopRepositoryImpl(apiService)
     }
 }
