@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -22,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 import ortiz.derek.c4.barber_shop.Models.Servicio
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.CardServicio
@@ -65,11 +68,25 @@ fun ServicioBarbero(navController: NavController, viewModel: ServicioViewModel =
                 fontWeight = FontWeight.Bold, color = Color.Black) }
             items(services, key = { it.id }) {
                 servicio ->
-                CardServicio(servicio = servicio, onDelete = {
+                val delete = SwipeAction(
+                    onSwipe = { viewModel.deleteServicio(servicio) },
+                    icon = {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Eliminar servicio",
+                            modifier = Modifier.padding(16.dp),
+                            tint = Color.White
+                        )
+                    },
+                    background = Color.Red
+                )
+                SwipeableActionsBox(endActions = listOf(delete)) {
+                    CardServicio(servicio = servicio, onDelete = {
 
-                }) {
-                    servicioToEdit = servicio
-                    showDialog = true
+                    }) {
+                        servicioToEdit = servicio
+                        showDialog = true
+                    }
                 }
             }
         }

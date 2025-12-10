@@ -40,4 +40,22 @@ class AdminRepositoryImpl @Inject constructor(
             apiService.createHorario(createHorarioRequest)
         }
     }
+
+    override suspend fun createServicio(createServicioRequest: CreateServicioRequest): CreateServicioResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.createServicio(createServicioRequest)
+        }
+    }
+
+    override suspend fun updateServicio(id: Int, updateServicioRequest: UpdateServicioRequest): UpdateServicioResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.updateServicio(id, updateServicioRequest)
+        }
+    }
+
+    override suspend fun deleteServicio(id: Int): DeleteServicioResponse {
+        return withContext(Dispatchers.IO) {
+            apiService.deleteServicio(id)
+        }
+    }
 }

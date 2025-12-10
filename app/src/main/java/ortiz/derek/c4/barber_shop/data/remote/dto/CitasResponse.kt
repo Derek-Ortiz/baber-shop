@@ -12,22 +12,3 @@ data class CitaData(
     val negocio: NegocioDto,
     val servicio: ServicioDto
 )
-
-data class CitaDto(
-    val id: Int,
-    val fecha: String,
-    val hora: String,
-    val estado: String,
-    val clienteId: Int,
-    val servicioId: Int,
-    val negocioId: Int
-)
-
-data class ClienteDto(
-    val id: Int,
-    val nombres: String,
-    val apellidoP: String,
-    val apellidoM: String,
-    val telefono: String,
-    val email: String
-)

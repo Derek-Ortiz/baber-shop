@@ -84,7 +84,7 @@ fun HomeBarbero(navController: NavController, viewModel: HomeBarberoViewModel = 
                         }
                         items(currentState.citas) { cita ->
                             CardDate(
-                                name = "${cita.cliente.nombres} ${cita.cliente.apellidoP}",
+                                name = "${cita.cliente.nombres}",
                                 Horario = "${cita.cita.hora} - ${cita.cita.fecha}"
                             )
                         }
@@ -120,7 +120,7 @@ fun BarberShopInfoCard(negocioData: GetNegocioResponseData, adminPhone: String?)
                 )
             }
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(negocioData.negocio?.nombre ?: "Nombre no disponible", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(negocioData.negocio?.direccion ?: "Nombre no disponible", fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.LocationOn, contentDescription = "Location")
@@ -138,7 +138,7 @@ fun BarberShopInfoCard(negocioData: GetNegocioResponseData, adminPhone: String?)
                     Icon(Icons.Default.Lock, contentDescription = "Hours")
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
-                        if (negocioData.horarios.isNullOrEmpty()){
+                        if (negocioData.horarios.isEmpty()){
                             Text("No hay horarios registrados")
                         }else {
                             negocioData.horarios.forEach {

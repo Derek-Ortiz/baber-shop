@@ -5,5 +5,6 @@ data class Servicio(
     val nombre: String,
     val descripcion: String? = null,
     val duracion: Int, // En minutos
-    val precio: Double
+    val precio: Double,
+    val negocioId: Int
 )

@@ -13,4 +13,10 @@ interface AdminRepository {
     suspend fun getNegocio(id: Int): GetNegocioResponse
 
     suspend fun createHorario(createHorarioRequest: CreateHorarioRequest): CreateHorarioResponse
+
+    suspend fun createServicio(createServicioRequest: CreateServicioRequest): CreateServicioResponse
+
+    suspend fun updateServicio(id: Int, updateServicioRequest: UpdateServicioRequest): UpdateServicioResponse
+
+    suspend fun deleteServicio(id: Int): DeleteServicioResponse
 }

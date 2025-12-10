@@ -112,7 +112,7 @@ fun HistorialCitasBarbero(navController: NavController, viewModel: HistorialCita
 
                         items(currentState.citas) { cita ->
                             CardDate(
-                                name = "${cita.cliente.nombres} ${cita.cliente.apellidoP}",
+                                name = "${cita.cliente.nombres} ",
                                 Horario = "${cita.cita.hora} - ${cita.cita.fecha}"
                             )
                         }

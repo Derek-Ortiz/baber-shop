@@ -21,16 +21,18 @@ class BarberShopRepositoryImpl @Inject constructor(private val apiService: ApiSe
                     id = negocioDto.id,
                     nombre = negocioDto.nombre,
                     direccion = negocioDto.direccion,
-                    telefono = negocioDto.telefono,
-                    servicios = negocioDto.servicios.map { servicioDto ->
+                    telefono = "N/A", // Assuming telefono is not available in NegocioDto
+                    servicios = negocioDto.servicios?.map { servicioDto ->
                         Servicio(
                             id = servicioDto.id,
                             nombre = servicioDto.nombre,
+                            duracion = servicioDto.duracion,
                             precio = servicioDto.precio,
-                            duracion = servicioDto.duracion
+                            descripcion = null,
+                            negocioId = servicioDto.negocioId,
                         )
-                    },
-                    horarios = negocioDto.horarios.map { horarioDto ->
+                    } ?: emptyList(),
+                    horarios = negocioDto.horarios?.map { horarioDto ->
                         Horario(
                             id = horarioDto.id,
                             dia = horarioDto.dia,
@@ -38,27 +40,29 @@ class BarberShopRepositoryImpl @Inject constructor(private val apiService: ApiSe
                             horaCierre = horarioDto.horaCierre,
                             negocioId = horarioDto.negocioId
                         )
-                    }
+                    } ?: emptyList()
                 )
             }
         } else {
-            throw Exception(response.message)
+            throw Exception(response.message ?: "Error getting businesses")
         }
     }
 
     override suspend fun getServicios(negocioId: Int): List<Servicio> {
-        val response = apiService.getNegocioDetalle(negocioId)
+        val response = apiService.getNegocio(negocioId)
         if (response.success) {
             return response.data.servicios.map { servicioDto ->
                 Servicio(
                     id = servicioDto.id,
                     nombre = servicioDto.nombre,
+                    duracion = servicioDto.duracion,
                     precio = servicioDto.precio,
-                    duracion = servicioDto.duracion
+                    descripcion = null,
+                    negocioId = servicioDto.negocioId,
                 )
             }
         } else {
-            throw Exception(response.message)
+            throw Exception(response.message ?: "Error getting services")
         }
     }
 
@@ -72,7 +76,7 @@ class BarberShopRepositoryImpl @Inject constructor(private val apiService: ApiSe
                 email = clienteDto.email
             )
         } else {
-            throw Exception(response.message)
+            throw Exception(response.message ?: "Error registering client")
         }
     }
 
@@ -90,7 +94,7 @@ class BarberShopRepositoryImpl @Inject constructor(private val apiService: ApiSe
                 negocioId = citaDto.negocioId
             )
         } else {
-            throw Exception(response.message)
+            throw Exception(response.message ?: "Error creating appointment")
         }
     }
 
@@ -109,7 +113,7 @@ class BarberShopRepositoryImpl @Inject constructor(private val apiService: ApiSe
                 )
             }
         } else {
-            throw Exception(response.message)
+            throw Exception(response.message ?: "Error getting client appointments")
         }
     }
 }
