@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ortiz.derek.c4.barber_shop.Routes
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.TopBar
 import ortiz.derek.c4.barber_shop.data.remote.dto.GetNegocioResponseData
@@ -50,7 +51,7 @@ fun BarberiaHome(navController: NavController, viewModel: HomeBarberiaViewModel 
                 }
                 is HomeBarberiaState.NegocioCreated -> {
                     LaunchedEffect(Unit){
-                        navController.navigate("homeBarbero")
+                        navController.navigate(Routes.BarberShopHome.route)
                     }
                 }
                 is HomeBarberiaState.NegocioLoaded -> {
@@ -140,8 +141,8 @@ fun NegocioDetailsContent(negocioData: GetNegocioResponseData, viewModel: HomeBa
             negocioId = negocioData.negocio.id,
             onDismiss = { showHorarioDialog = false },
             onConfirm = {
-                dia, horaApertura, horaCierre, negocioId ->
-                viewModel.createHorario(dia, horaApertura, horaCierre, negocioId)
+                dia, horaApertura, horaCierre, _ ->
+                viewModel.createHorario(dia, horaApertura, horaCierre)
                 showHorarioDialog = false
             }
         )

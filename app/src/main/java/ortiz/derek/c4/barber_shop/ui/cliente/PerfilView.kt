@@ -26,6 +26,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,14 +36,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ortiz.derek.c4.barber_shop.Routes
 import ortiz.derek.c4.barber_shop.ui.components.BottomNavBar
+import ortiz.derek.c4.barber_shop.view_models.PerfilViewModel
 
 @Composable
-fun PerfilView(navController: NavController) {
+fun PerfilView(navController: NavController, viewModel: PerfilViewModel = hiltViewModel()) {
+    val userData by viewModel.userData.collectAsState()
+
     Scaffold(
-        bottomBar = { BottomNavBar(navController, currentRoute = "perfil") }
+        bottomBar = { BottomNavBar(navController, currentRoute = Routes.Profile.route) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -65,7 +72,7 @@ fun PerfilView(navController: NavController) {
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 24.dp)
                     )
-                    
+
                     Surface(
                         modifier = Modifier.size(100.dp),
                         shape = CircleShape,
@@ -78,16 +85,16 @@ fun PerfilView(navController: NavController) {
                             tint = Color.Black
                         )
                     }
-                    
+
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "José Juan Ramos Cabrera",
+                        text = "${userData.nombres ?: ""} ${userData.apellidoP ?: ""}".trim(),
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        "Cliente desde Enero 2025",
+                        "Cliente", // O podrías usar userType si lo tienes
                         color = Color.White.copy(alpha = 0.7f),
                         fontSize = 14.sp
                     )
@@ -108,11 +115,11 @@ fun PerfilView(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        ProfileInfoRow(icon = Icons.Default.Email, title = "Email", value = "juan_ramos@gmail.com")
+                        ProfileInfoRow(icon = Icons.Default.Email, title = "Email", value = userData.email ?: "No especificado")
                         Divider(modifier = Modifier.padding(vertical = 8.dp))
-                        ProfileInfoRow(icon = Icons.Default.Phone, title = "Teléfono", value = "999-654-321")
+                        ProfileInfoRow(icon = Icons.Default.Phone, title = "Teléfono", value = userData.telefono ?: "No especificado")
                         Divider(modifier = Modifier.padding(vertical = 8.dp))
-                        ProfileInfoRow(icon = Icons.Default.LocationOn, title = "Ubicación", value = "Calle 40 #456, Centro")
+                        ProfileInfoRow(icon = Icons.Default.LocationOn, title = "Ubicación", value = userData.direccion ?: "No especificado")
                     }
                 }
 
@@ -149,7 +156,14 @@ fun PerfilView(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { /* TODO: Logout */ },
+                    onClick = {
+                        viewModel.logout()
+                        navController.navigate(Routes.Login.route) {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF9A9A)),
                     shape = RoundedCornerShape(24.dp),

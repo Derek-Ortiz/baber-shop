@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ortiz.derek.c4.barber_shop.Routes
 import ortiz.derek.c4.barber_shop.data.model.CitaRequest
 import ortiz.derek.c4.barber_shop.helpers.Result
 import ortiz.derek.c4.barber_shop.view_models.FechaHoraViewModel
@@ -57,7 +58,7 @@ fun FechaHoraView(
 
     LaunchedEffect(reservaState) {
         if (reservaState is Result.Success) {
-            navController.navigate("citas")
+            navController.navigate(Routes.MyAppointments.route)
         }
     }
 

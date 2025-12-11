@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.flow.first
+import ortiz.derek.c4.barber_shop.Routes
 import ortiz.derek.c4.barber_shop.data.model.Cita
 import ortiz.derek.c4.barber_shop.helpers.Result
 import ortiz.derek.c4.barber_shop.ui.components.BottomNavBar
@@ -39,7 +41,11 @@ fun MisCitasView(
     val citasState by viewModel.citas.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchCitas(1) // Hardcoded user ID for now
+        val userData = viewModel.userPreferencesRepository.userData.first()
+        val userId = userData.userId
+        if (userId != null && userId != 0) {
+            viewModel.fetchCitas(userId)
+        }
     }
 
     Scaffold(
@@ -53,7 +59,7 @@ fun MisCitasView(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF0D47A1))
             )
         },
-        bottomBar = { BottomNavBar(navController, currentRoute = "citas") }
+        bottomBar = { BottomNavBar(navController, currentRoute = Routes.MyAppointments.route) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

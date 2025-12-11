@@ -32,7 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ortiz.derek.c4.barber_shop.data.model.Servicio
+import ortiz.derek.c4.barber_shop.Routes
+import ortiz.derek.c4.barber_shop.data.remote.dto.ServicioDto
 import ortiz.derek.c4.barber_shop.helpers.Result
 import ortiz.derek.c4.barber_shop.view_models.ServiciosViewModel
 
@@ -95,7 +96,7 @@ fun ServiciosView(
                         ) {
                             items(servicios) { servicio ->
                                 ServicioCard(servicio) {
-                                    navController.navigate("fecha/${servicio.id}")
+                                    navController.navigate(Routes.DateTime.createRoute(servicio.id))
                                 }
                             }
                         }
@@ -116,7 +117,7 @@ fun ServiciosView(
 }
 
 @Composable
-fun ServicioCard(servicio: Servicio, onClick: () -> Unit) {
+fun ServicioCard(servicio: ServicioDto, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

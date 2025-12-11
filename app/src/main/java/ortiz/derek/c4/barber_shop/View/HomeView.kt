@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ortiz.derek.c4.barber_shop.R
+import ortiz.derek.c4.barber_shop.Routes
+import ortiz.derek.c4.barber_shop.view_models.HomeViewModel
 import ortiz.derek.c4.barber_shop.ui.theme.*
 
 
@@ -119,13 +120,14 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                         when (loginState) {
                             is LoginState.Success -> {
                                 LaunchedEffect(Unit) {
-                                    if (userData?.negocioId == 0 || userData?.negocioId == -1 || userData?.negocioId == null) {
-                                        navController.navigate("BarberoHome")
-//                                        navController.navigate("homeBarbero")
-
+                                    if (userData?.negocioId != null) { 
+                                        navController.navigate(Routes.BarberHome.route) {
+                                            popUpTo(Routes.Login.route) { inclusive = true }
+                                        }
                                     } else {
-                                        navController.navigate("homeBarbero")
-//                                        navController.navigate("BarberoHome")
+                                        navController.navigate(Routes.Home.route) {
+                                            popUpTo(Routes.Login.route) { inclusive = true }
+                                        }
                                     }
                                 }
                             }
@@ -151,7 +153,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 
                         Button(
                             onClick = {
-                                navController.navigate("Registrar")
+                                navController.navigate(Routes.Home.route)
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
                             modifier = Modifier.fillMaxWidth()
@@ -180,6 +182,27 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     modifier = Modifier.size(100.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun HomeView(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = {
+            navController.navigate(Routes.Services.route)
+        }) {
+            Text("Ver Servicios")
+        }
+
+        Button(onClick = {
+            navController.navigate(Routes.MyAppointments.route)
+        }) {
+            Text("Mis Citas")
         }
     }
 }

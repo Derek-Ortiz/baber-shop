@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -34,50 +33,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ortiz.derek.c4.barber_shop.R
+import ortiz.derek.c4.barber_shop.Routes
 import ortiz.derek.c4.barber_shop.ui.theme.CircleColor
 import ortiz.derek.c4.barber_shop.ui.theme.LightBlue
 import ortiz.derek.c4.barber_shop.ui.theme.PrimaryBlue
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registrar(navController: NavController){
-
+fun RegistrarView(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 80.dp),
         contentAlignment = Alignment.Center
-
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .width(300.dp)
+            modifier = Modifier.width(300.dp)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(400.dp)
-                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 20.dp, bottomEnd = 20.dp))
+                    .clip(RoundedCornerShape(20.dp))
                     .background(PrimaryBlue)
                     .padding(top = 70.dp, start = 20.dp, end = 20.dp)
             ) {
-                IconButton(
-                    onClick ={
-                        navController.popBackStack()
-                    }
-                ) {
-                    Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, contentDescription = "regresar",
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = "regresar",
                         tint = Color.White,
-                        modifier = Modifier.size(30.dp))
+                        modifier = Modifier.size(30.dp)
+                    )
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
                         text = "Registrarse",
@@ -92,45 +85,29 @@ fun Registrar(navController: NavController){
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
-                    Column(
-
+                    Button(
+                        onClick = { navController.navigate(Routes.Register.route) },
+                        colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
                         modifier = Modifier.fillMaxWidth()
-                            .fillMaxHeight(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-
-
                     ) {
+                        Text("Cliente", color = Color.White)
+                    }
 
-                        Button(
-                            onClick = { /* Lógica de iniciar sesión */ },
-                            colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Cliente", color = Color.White)
-                        }
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Button(
-                            onClick = {
-                                navController.navigate("RegistroBarbero")
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Peluquero", color = Color.White)
-                        }
+                    Button(
+                        onClick = { navController.navigate(Routes.BarberRegister.route) },
+                        colors = ButtonDefaults.buttonColors(containerColor = LightBlue),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Peluquero", color = Color.White)
                     }
                 }
-
-
             }
-
 
             Box(
                 modifier = Modifier
-                    .offset(y = (-500).dp) // Mueve el círculo hacia arriba para superponer
+                    .offset(y = (-450).dp) // Adjust offset to position correctly
                     .size(150.dp)
                     .clip(CircleShape)
                     .background(CircleColor)
@@ -145,6 +122,4 @@ fun Registrar(navController: NavController){
             }
         }
     }
-
-
 }

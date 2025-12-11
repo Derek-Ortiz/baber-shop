@@ -40,16 +40,11 @@ class RegistrarViewModel @Inject constructor(
                 )
                 val result = repository.registrarCliente(request)
                 
-                val usuarioResult = Usuario(
-                    id = result.id,
-                    nombre = result.nombre,
-                    apellidoPaterno = usuario.apellidoPaterno,
-                    apellidoMaterno = usuario.apellidoMaterno,
-                    telefono = usuario.telefono,
-                    direccion = usuario.direccion,
-                    email = result.email
-                )
-                _registroState.value = RegistroState.Success(usuarioResult)
+                if (result.success) {
+                    _registroState.value = RegistroState.Success(usuario)
+                } else {
+                    _registroState.value = RegistroState.Error(result.message)
+                }
             } catch (e: Exception) {
                 _registroState.value = RegistroState.Error(e.message ?: "Error desconocido al registrar el usuario")
             }

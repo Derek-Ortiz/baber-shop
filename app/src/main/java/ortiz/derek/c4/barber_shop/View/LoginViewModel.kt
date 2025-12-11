@@ -27,15 +27,16 @@ class LoginViewModel @Inject constructor(
             try {
                 val response = loginUseCase(LoginRequest(email, password))
                 if (response.success) {
-                    userPreferencesRepository.saveUserData(
-                        userId = response.administrador.id,
-                        email = email,
-                        password = password,
-                        negocioId = response.administrador.negocioId ?: -1
-                    )
+                    // Comprobar si la respuesta es un administrador o un cliente
+                    response.administrador?.let {
+                        userPreferencesRepository.saveAdminData(it)
+                    }
+                    response.cliente?.let {
+                        userPreferencesRepository.saveClientData(it)
+                    }
                     _loginState.value = LoginState.Success(response)
                 } else {
-                    _loginState.value = LoginState.Error("Usuario o contraseña incorrectos")
+                    _loginState.value = LoginState.Error(response.message ?: "Usuario o contraseña incorrectos")
                 }
             } catch (e: Exception) {
                 _loginState.value = LoginState.Error(e.message ?: "Error desconocido")

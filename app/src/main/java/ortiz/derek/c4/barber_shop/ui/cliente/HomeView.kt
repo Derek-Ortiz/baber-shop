@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ortiz.derek.c4.barber_shop.data.model.Negocio
+import ortiz.derek.c4.barber_shop.data.remote.dto.NegocioDto
 import ortiz.derek.c4.barber_shop.helpers.Result
 import ortiz.derek.c4.barber_shop.ui.components.BottomNavBar
 import ortiz.derek.c4.barber_shop.view_models.HomeViewModel
@@ -99,7 +99,7 @@ fun HomeView(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         val filteredNegocios = negocios.filter {
-                            it.nombre.contains(searchQuery, ignoreCase = true)
+                            it.nombreN.contains(searchQuery, ignoreCase = true)
                         }
 
                         items(filteredNegocios) { negocio ->
@@ -124,7 +124,7 @@ fun HomeView(
 }
 
 @Composable
-fun NegocioCard(negocio: Negocio, onClick: () -> Unit) {
+fun NegocioCard(negocio: NegocioDto, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -145,16 +145,11 @@ fun NegocioCard(negocio: Negocio, onClick: () -> Unit) {
             }
             
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(negocio.nombre, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(negocio.nombreN, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
                 InfoRow(icon = Icons.Default.LocationOn, text = negocio.direccion)
-                InfoRow(icon = Icons.Default.Phone, text = negocio.telefono)
-                val horarioText = if (!negocio.horarios.isNullOrEmpty()) {
-                    "${negocio.horarios[0].horaApertura}-${negocio.horarios[0].horaCierre}" 
-                } else {
-                    "Consultar horario"
-                }
-                InfoRow(icon = Icons.Default.AccessTime, text = horarioText)
+                InfoRow(icon = Icons.Default.Phone, text = "Consultar teléfono")
+                InfoRow(icon = Icons.Default.AccessTime, text = "Consultar horario")
             }
         }
     }

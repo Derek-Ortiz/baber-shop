@@ -7,5 +7,10 @@ import javax.inject.Inject
 class CreateHorarioUseCase @Inject constructor(
     private val repository: AdminRepository
 ) {
-    suspend operator fun invoke(createHorarioRequest: CreateHorarioRequest) = repository.createHorario(createHorarioRequest)
+    suspend operator fun invoke(createHorarioRequest: CreateHorarioRequest) = repository.createHorario(
+        dia = createHorarioRequest.dia,
+        horaApertura = createHorarioRequest.horaApertura,
+        horaCierre = createHorarioRequest.horaCierre,
+        negocioId = createHorarioRequest.negocioId
+    )
 }

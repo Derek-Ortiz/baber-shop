@@ -14,7 +14,7 @@ import ortiz.derek.c4.barber_shop.helpers.Result
 import javax.inject.Inject
 
 @HiltViewModel
-class MisCitasViewModel @Inject constructor(
+class CitasViewModel @Inject constructor(
     private val repository: BarberShopRepository,
     val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
@@ -22,11 +22,11 @@ class MisCitasViewModel @Inject constructor(
     private val _citas = MutableStateFlow<Result<List<Cita>>>(Result.Idle)
     val citas: StateFlow<Result<List<Cita>>> = _citas.asStateFlow()
 
-    fun fetchCitas(usuarioId: Int) {
+    fun fetchCitas(clienteId: Int) {
         viewModelScope.launch {
             _citas.value = Result.Loading
             try {
-                val result = repository.getCitasCliente(usuarioId)
+                val result = repository.getCitasCliente(clienteId)
                 _citas.value = Result.Success(result)
             } catch (e: Exception) {
                 _citas.value = Result.Error(e.message ?: "Error desconocido al obtener las citas")

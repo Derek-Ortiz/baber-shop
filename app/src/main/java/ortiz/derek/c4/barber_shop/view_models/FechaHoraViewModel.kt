@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ortiz.derek.c4.barber_shop.data.model.Cita
 import ortiz.derek.c4.barber_shop.data.model.CitaRequest
+import ortiz.derek.c4.barber_shop.data.remote.dto.AddCitaResponse
 import ortiz.derek.c4.barber_shop.domain.repository.BarberShopRepository
 import ortiz.derek.c4.barber_shop.helpers.Result
 import javax.inject.Inject
@@ -18,8 +18,8 @@ class FechaHoraViewModel @Inject constructor(
     private val repository: BarberShopRepository
 ) : ViewModel() {
 
-    private val _reservaState = MutableStateFlow<Result<Cita>>(Result.Idle)
-    val reservaState: StateFlow<Result<Cita>> = _reservaState.asStateFlow()
+    private val _reservaState = MutableStateFlow<Result<AddCitaResponse>>(Result.Idle)
+    val reservaState: StateFlow<Result<AddCitaResponse>> = _reservaState.asStateFlow()
 
     fun resetState() {
         _reservaState.value = Result.Idle

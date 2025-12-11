@@ -7,5 +7,8 @@ import javax.inject.Inject
 class CreateNegocioUseCase @Inject constructor(
     private val repository: AdminRepository
 ) {
-    suspend operator fun invoke(createNegocioRequest: CreateNegocioRequest) = repository.createNegocio(createNegocioRequest)
+    suspend operator fun invoke(createNegocioRequest: CreateNegocioRequest) = repository.createNegocio(
+        nombre = createNegocioRequest.nombreN,
+        direccion = createNegocioRequest.direccion
+    )
 }

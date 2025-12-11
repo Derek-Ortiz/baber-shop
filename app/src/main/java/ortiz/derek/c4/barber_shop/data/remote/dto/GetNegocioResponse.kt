@@ -5,9 +5,3 @@ data class GetNegocioResponse(
     val message: String,
     val data: GetNegocioResponseData
 )
-
-data class GetNegocioResponseData(
-    val negocio: NegocioDto,
-    val horarios: List<HorarioDto>,
-    val servicios: List<ServicioDto>
-)

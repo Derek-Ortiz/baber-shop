@@ -8,70 +8,93 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import ortiz.derek.c4.barber_shop.data.local.UserPreferencesRepository
-import ortiz.derek.c4.barber_shop.data.remote.dto.CreateHorarioRequest
-import ortiz.derek.c4.barber_shop.data.remote.dto.CreateNegocioRequest
 import ortiz.derek.c4.barber_shop.data.remote.dto.GetNegocioResponseData
-import ortiz.derek.c4.barber_shop.domain.use_case.CreateHorarioUseCase
-import ortiz.derek.c4.barber_shop.domain.use_case.CreateNegocioUseCase
-import ortiz.derek.c4.barber_shop.domain.use_case.GetNegocioUseCase
+import ortiz.derek.c4.barber_shop.domain.repository.AdminRepository
+import ortiz.derek.c4.barber_shop.domain.repository.BarberShopRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeBarberiaViewModel @Inject constructor(
-    private val createNegocioUseCase: CreateNegocioUseCase,
-    private val getNegocioUseCase: GetNegocioUseCase,
-    private val createHorarioUseCase: CreateHorarioUseCase,
+    private val adminRepository: AdminRepository,
+    private val barberShopRepository: BarberShopRepository,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf<HomeBarberiaState>(HomeBarberiaState.NoNegocio)
+    private val _state = mutableStateOf<HomeBarberiaState>(HomeBarberiaState.Loading)
     val state: State<HomeBarberiaState> = _state
+
+    private var currentNegocioId: Int? = null
+
+    init {
+        checkUserNegocio()
+    }
+
+    private fun checkUserNegocio() {
+        viewModelScope.launch {
+            _state.value = HomeBarberiaState.Loading
+            try {
+                val negocioId = userPreferencesRepository.userData.first().negocioId
+                if (negocioId != null && negocioId != 0) {
+                    currentNegocioId = negocioId
+                    fetchNegocioDetails(negocioId)
+                } else {
+                    _state.value = HomeBarberiaState.NoNegocio
+                }
+            } catch (e: Exception) {
+                _state.value = HomeBarberiaState.Error(e.message ?: "Error al verificar el negocio.")
+            }
+        }
+    }
+
+    private fun fetchNegocioDetails(negocioId: Int) {
+        viewModelScope.launch {
+            _state.value = HomeBarberiaState.Loading
+            try {
+                val response = barberShopRepository.getNegocio(negocioId)
+                if (response.success) {
+                    _state.value = HomeBarberiaState.NegocioLoaded(response.data)
+                } else {
+                    _state.value = HomeBarberiaState.Error(response.message ?: "No se pudieron cargar los detalles del negocio.")
+                }
+            } catch (e: Exception) {
+                _state.value = HomeBarberiaState.Error(e.message ?: "Error de red al cargar el negocio.")
+            }
+        }
+    }
 
     fun createNegocio(nombre: String, direccion: String) {
         viewModelScope.launch {
             _state.value = HomeBarberiaState.Loading
             try {
-                val response = createNegocioUseCase(CreateNegocioRequest(nombre, direccion))
+                val response = adminRepository.createNegocio(nombre, direccion)
                 if (response.success) {
-                    userPreferencesRepository.saveNegocioId(response.data.id)
-                    _state.value = HomeBarberiaState.NegocioCreated(response.data)
+                    _state.value = HomeBarberiaState.NegocioCreated
                 } else {
-                    _state.value = HomeBarberiaState.Error("Error al crear el negocio")
+                    _state.value = HomeBarberiaState.Error(response.message ?: "Error al crear el negocio.")
                 }
             } catch (e: Exception) {
-                _state.value = HomeBarberiaState.Error(e.message ?: "Error desconocido")
+                _state.value = HomeBarberiaState.Error(e.message ?: "Error desconocido al crear el negocio.")
             }
         }
     }
 
-    private fun getNegocio(id: Int) {
+    fun createHorario(dia: String, horaApertura: String, horaCierre: String) {
         viewModelScope.launch {
-            _state.value = HomeBarberiaState.Loading
-            try {
-                val response = getNegocioUseCase(id)
-                if (response.success) {
-                    _state.value = HomeBarberiaState.NegocioLoaded(response.data)
-                } else {
-                    _state.value = HomeBarberiaState.Error(response.message)
-                }
-            } catch (e: Exception) {
-                _state.value = HomeBarberiaState.Error(e.message ?: "Error desconocido")
+            val negocioId = currentNegocioId
+            if (negocioId == null) {
+                _state.value = HomeBarberiaState.Error("No se puede añadir horario sin un negocio.")
+                return@launch
             }
-        }
-    }
-
-    fun createHorario(dia: String, horaApertura: String, horaCierre: String, negocioId: Int) {
-        viewModelScope.launch {
             try {
-                val response = createHorarioUseCase(CreateHorarioRequest(dia, horaApertura, horaCierre, negocioId))
+                val response = adminRepository.createHorario(dia, horaApertura, horaCierre, negocioId)
                 if (response.success) {
-                    // Refresh negocio data
-                    getNegocio(negocioId)
+                    // Si se crea el horario, recargamos los detalles del negocio para ver el cambio
+                    fetchNegocioDetails(negocioId)
                 } else {
-                    _state.value = HomeBarberiaState.Error("Error al crear el horario")
+                    // Idealmente, aquí se mostraría un error temporal sin cambiar toda la vista
                 }
             } catch (e: Exception) {
-                _state.value = HomeBarberiaState.Error(e.message ?: "Error desconocido")
+                // Manejar error de red
             }
         }
     }
@@ -79,8 +102,8 @@ class HomeBarberiaViewModel @Inject constructor(
 
 sealed class HomeBarberiaState {
     object Loading : HomeBarberiaState()
-    object NoNegocio : HomeBarberiaState()
-    data class NegocioCreated(val negocio: ortiz.derek.c4.barber_shop.data.remote.dto.NegocioDto) : HomeBarberiaState()
+    object NoNegocio : HomeBarberiaState() // El usuario es barbero pero no tiene negocio
+    object NegocioCreated : HomeBarberiaState() // El negocio se creó, podría navegar o mostrar un mensaje
     data class NegocioLoaded(val negocioData: GetNegocioResponseData) : HomeBarberiaState()
     data class Error(val message: String) : HomeBarberiaState()
 }

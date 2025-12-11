@@ -17,15 +17,16 @@ class AdminRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun register(registerRequest: RegisterRequest): RegisterResponse {
+    override suspend fun register(registerRequest: AdminRegisterRequest): RegisterResponse {
         return withContext(Dispatchers.IO) {
             apiService.register(registerRequest)
         }
     }
 
-    override suspend fun createNegocio(createNegocioRequest: CreateNegocioRequest): CreateNegocioResponse {
+    override suspend fun createNegocio(nombre: String, direccion: String): CreateNegocioResponse {
+        val request = CreateNegocioRequest(nombre, direccion)
         return withContext(Dispatchers.IO) {
-            apiService.createNegocio(createNegocioRequest)
+            apiService.createNegocio(request)
         }
     }
 
@@ -35,9 +36,10 @@ class AdminRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createHorario(createHorarioRequest: CreateHorarioRequest): CreateHorarioResponse {
+    override suspend fun createHorario(dia: String, horaApertura: String, horaCierre: String, negocioId: Int): CreateHorarioResponse {
+        val request = CreateHorarioRequest(dia, horaApertura, horaCierre, negocioId)
         return withContext(Dispatchers.IO) {
-            apiService.createHorario(createHorarioRequest)
+            apiService.createHorario(request)
         }
     }
 }

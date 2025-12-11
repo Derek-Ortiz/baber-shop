@@ -23,7 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ortiz.derek.c4.barber_shop.R
-import ortiz.derek.c4.barber_shop.data.remote.dto.RegisterRequest
+import ortiz.derek.c4.barber_shop.Routes
+import ortiz.derek.c4.barber_shop.data.remote.dto.AdminRegisterRequest
 import ortiz.derek.c4.barber_shop.ui.theme.*
 
 @Composable
@@ -246,13 +247,13 @@ fun RegistroBarbero(navController: NavController, viewModel: RegisterViewModel =
                         is RegisterState.Success -> {
                             LaunchedEffect(Unit) {
                                 if (userData?.negocioId == null) {
-                                    navController.navigate("homeBarberia") {
+                                    navController.navigate(Routes.BarberHome.route) {
                                         popUpTo(navController.graph.startDestinationId) {
                                             inclusive = true
                                         }
                                     }
                                 } else {
-                                    navController.navigate("homeBarbero") {
+                                    navController.navigate(Routes.BarberShopHome.route) {
                                         popUpTo(navController.graph.startDestinationId) {
                                             inclusive = true
                                         }
@@ -274,7 +275,7 @@ fun RegistroBarbero(navController: NavController, viewModel: RegisterViewModel =
 
                     Button(
                         onClick = {
-                            val registerRequest = RegisterRequest(
+                            val adminRegisterRequest = AdminRegisterRequest(
                                 nombres = nombre,
                                 apellidoP = apellidoP,
                                 apellidoM = apellidoM,
@@ -282,7 +283,7 @@ fun RegistroBarbero(navController: NavController, viewModel: RegisterViewModel =
                                 email = email,
                                 contraseña = contraseña
                             )
-                            viewModel.register(registerRequest)
+                            viewModel.register(adminRegisterRequest)
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen),
                         modifier = Modifier.fillMaxWidth(),

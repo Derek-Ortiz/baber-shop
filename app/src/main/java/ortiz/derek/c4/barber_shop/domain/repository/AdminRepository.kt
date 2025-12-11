@@ -6,11 +6,13 @@ interface AdminRepository {
 
     suspend fun login(loginRequest: LoginRequest): LoginResponse
 
-    suspend fun register(registerRequest: RegisterRequest): RegisterResponse
+    suspend fun register(registerRequest: AdminRegisterRequest): RegisterResponse
 
-    suspend fun createNegocio(createNegocioRequest: CreateNegocioRequest): CreateNegocioResponse
+    // Se cambia para aceptar parámetros directos en lugar de un objeto Request
+    suspend fun createNegocio(nombre: String, direccion: String): CreateNegocioResponse
 
     suspend fun getNegocio(id: Int): GetNegocioResponse
 
-    suspend fun createHorario(createHorarioRequest: CreateHorarioRequest): CreateHorarioResponse
+    // Se cambia para aceptar parámetros directos en lugar de un objeto Request
+    suspend fun createHorario(dia: String, horaApertura: String, horaCierre: String, negocioId: Int): CreateHorarioResponse
 }

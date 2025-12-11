@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import ortiz.derek.c4.barber_shop.Routes
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.ButtonBar
 import ortiz.derek.c4.barber_shop.View.barbero.componentes.TopBar
 import ortiz.derek.c4.barber_shop.ui.theme.PrimaryBlue
@@ -98,7 +99,7 @@ fun ProfileBody(navController: NavController) {
         Spacer(modifier = Modifier.height(8.dp))
         SettingsItem(icon = Icons.Default.Edit, text = "Editar Perfil", onClick = { /* Navigate to Edit Profile */ })
         Spacer(modifier = Modifier.height(8.dp))
-        SettingsItem(icon = Icons.Default.ExitToApp, text = "Cerrar Sesión", color = Color.Red, onClick = { /* Log out */ })
+        SettingsItem(icon = Icons.Default.ExitToApp, text = "Cerrar Sesión", color = Color.Red, onClick = { navController.navigate(Routes.Login.route) { popUpTo(Routes.Login.route) { inclusive = true } } })
     }
 }
 

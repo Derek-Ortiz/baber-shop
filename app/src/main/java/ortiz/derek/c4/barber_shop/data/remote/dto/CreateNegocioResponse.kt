@@ -5,9 +5,3 @@ data class CreateNegocioResponse(
     val message: String,
     val data: NegocioDto
 )
-
-data class NegocioDto(
-    val id: Int,
-    val nombreN: String,
-    val direccion: String
-)
